@@ -1,8 +1,8 @@
-const SBD = 'SBD'
-const STEEM = 'STEEM'
+const SBD = 'EUR'
+const STEEM = 'EFTG'
 const SP = 'SP'
 const VESTS = 'VESTS'
-const RPC_NODE = { url: 'https://api.steemit.com' }
+const RPC_NODE = { url: 'https://api.dev.blkcc.xyz' }
 
 export default {
   SBD: SBD,
