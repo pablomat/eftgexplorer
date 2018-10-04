@@ -13,9 +13,9 @@ To bring up a running container it's as simple as this:
 docker run -it -p 8080:8080 blkcc/eftgexplorer
 ```
 
-Environmental variables can be used to allow connections from a different hostname than localhost
+Environmental variables can be used to allow connections from a different hostname than localhost and port can be changed to default. 
 ```
-docker run -it --env PUBLIC_HOSTNAME="my.domain.name" -p 8080:8080 blkcc/eftgexplorer
+docker run -it --env PUBLIC_HOSTNAME="my.domain.name" -p 80:8080 blkcc/eftgexplorer
 ```
 
 If you would like to modify, build, and run eftgexplorer using docker, it's as simple as pulling in the github repo and issuing one command to build it, like this:
@@ -26,7 +26,7 @@ docker build -t="myname/explorer:mybranch" .
 docker run -it -p 8080:8080 myname/explorer:mybranch
 ```
 
-## Building from source withour Docker
+## Building from source without Docker
 
 #### Config
 
