@@ -1,4 +1,5 @@
-FROM node:latest
+FROM node:alpine
+RUN apk add --no-cache bash
 
 ENV HOST=0.0.0.0
 
