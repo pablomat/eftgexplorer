@@ -1,18 +1,31 @@
-# steemexplorer
+# eftgexplorer
 
-> Steem Explorer for the EFTG blockchain
+> Block explorer for the European Financial Transparency Gateway (EFTG).
 
 ## Config
 
 Change the configuration file `src/config.js` with the symbols and rpc_node of the blockchain. (By default EFTG values are used)
 
-## Build Setup
+## Installation
 
-``` Docker
-# build docker image
-docker build .
+#### Docker
+
+We recommend docker to use the EFTG explorer. An image is already available on dockerhub
+
+To bring up a running container it's as simple as this:
+```
+docker run -it -p 8080:8080 blkcc/eftgexplorer
 ```
 
+If you would like to modify, build, and run eftgexplorer using docker, it's as simple as pulling in the github repo and issuing one command to build it, like this:
+```
+git clone https://github.com/pablomat/steemexplorer.git
+cd steemexplorer
+docker build -t="myname/explorer:mybranch" .
+docker run -it -p 8080:8080 myname/explorer:mybranch
+```
+
+## Building from source withour Docker
 ``` bash
 # install dependencies
 npm install
