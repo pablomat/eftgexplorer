@@ -1,11 +1,17 @@
 # steemexplorer
 
-> Steem Explorer
+> Steem Explorer for the EFTG blockchain
 
 ## Config
-Change the configuration file `/config.js` with the symbols and rpc_node of the blockchain.
+
+Change the configuration file `src/config.js` with the symbols and rpc_node of the blockchain. (By default EFTG values are used)
 
 ## Build Setup
+
+``` Docker
+# build docker image
+docker build .
+```
 
 ``` bash
 # install dependencies
