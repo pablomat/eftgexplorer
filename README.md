@@ -15,7 +15,7 @@ docker run -it -p 8080:8080 blkcc/eftgexplorer
 
 Environmental variables can be used to allow connections from a different hostname than localhost
 ```
-docker run -it --env PUBLIC_HOSTNAME="explorer.blkcc.xyz" -p 8080:8080 blkcc/eftgexplorer
+docker run -it --env PUBLIC_HOSTNAME="my.domain.name" -p 8080:8080 blkcc/eftgexplorer
 ```
 
 If you would like to modify, build, and run eftgexplorer using docker, it's as simple as pulling in the github repo and issuing one command to build it, like this:
