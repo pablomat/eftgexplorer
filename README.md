@@ -2,10 +2,6 @@
 
 > Block explorer for the European Financial Transparency Gateway (EFTG).
 
-## Config
-
-Change the configuration file `src/config.js` with the symbols and rpc_node of the blockchain. (By default EFTG values are used)
-
 ## Installation
 
 #### Docker
@@ -26,6 +22,12 @@ docker run -it -p 8080:8080 myname/explorer:mybranch
 ```
 
 ## Building from source withour Docker
+
+#### Config
+
+Change the configuration file `src/config.js` with the symbols and rpc_node of the blockchain. (By default EFTG values are used)
+
+#### Install dependencies & build
 ``` bash
 # install dependencies
 npm install
