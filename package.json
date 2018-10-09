@@ -5,7 +5,7 @@
   "author": "Julian <steemit.com/@jga>",
   "private": true,
   "scripts": {
-    "predev": "if [[ -z ${PUBLIC_HOSTNAME+x} ]]; then { PUBLIC_HOSTNAME=\"explorer.eftg.blkcc.xyz\"; } fi",
+    "predev": "if [[ -z ${PUBLIC_HOSTNAME+x} ]]; then { PUBLIC_HOSTNAME=\"explorer.blkcc.xyz\"; } fi",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --public ${PUBLIC_HOSTNAME}",
     "start": "npm run dev",
     "build": "node build/build.js"
