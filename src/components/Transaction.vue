@@ -1,11 +1,16 @@
 <template>
   <div class="transaction">
     <div v-if="this.exists">
-      <h1>Transaction</h1>
-      <h2>{{$route.params.tx}}</h2>
-      <trx :tx="tx"></trx>
-      <h2>Raw</h2>
-      <card-data :data="tx"></card-data>
+      <div class="info0">
+        <h1>Transaction</h1>
+        <h2>{{$route.params.tx}}</h2>
+        <trx :tx="tx"></trx>
+        <h2>Raw</h2>
+        <card-data :data="tx"></card-data>
+      </div>
+    </div>  
+    <div v-else>
+      <div class="loader"></div>
     </div>
   </div>
 </template>
@@ -74,9 +79,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.transaction{
-  margin: 15px 50px;
-}
 
 </style>

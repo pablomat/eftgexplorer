@@ -1,20 +1,36 @@
 <template>
   <div class="account">
     <div v-if="this.exists.account">
-      <div class="profile">
-        <div class="image" :style="'background-image: url('+this.account.profile_image+');'"></div>
-        <div class="name"><h1><strong>@{{this.account.name}}</strong> ({{account.rep_log}})</h1></div>
+      <div class="profile" :style="this.account.cover_image==''?'background-color: black;':'background-image: url('+this.account.cover_image+');'">
+        <div>
+          <div class="image" :style="'background-image: url('+this.account.profile_image+');'"></div>
+          <div class="name"><h1><strong>@{{this.account.name}}</strong> ({{account.rep_log}})</h1></div>
+        </div>
       </div>
       <div class="info1">
+        <h2>Generals</h2>
+        <card-data :data="this.accountGenerals"></card-data>
         <div v-if="this.exists.voting_manabar">
           <h2>Voting manabar</h2>
           <card-data :data="this.account.voting_manabar"></card-data>
         </div>
         <h2>Account info</h2>
-        <card-data :data="this.accountGenerals"></card-data>
-        <h2>Witness votes</h2>
+        <card-data :data="this.accountGenerals2"></card-data>
+        <div v-if="this.exists.witness">
+          <h2>Witness info</h2>
+          <card-data :data="this.witnessGenerals"></card-data>
+          <h3>Witness props</h3>
+          <card-data :data="this.witness.props"></card-data>
+          <h3>SBD exchange rate</h3>
+          <card-data :data="this.witness.sbd_exchange_rate"></card-data>          
+        </div>
+        <h2>{{this.account.name}} votes for</h2>
         <card-data :data="this.account.witness_votes" typeCard="witnesses" :link="true"></card-data>
         <h2>Authorities</h2>
+        <div v-if="this.exists.witness">
+          <h3>Signing Auth</h3>
+          <card-data :data="this.authorities.signing"></card-data>
+        </div>
         <h3>Owner Auth</h3>
         <card-data :data="this.authorities.owner" :link="true"></card-data>
         <h3>Active Auth</h3>
@@ -30,9 +46,14 @@
           <card-data :data="this.account.json_metadata"></card-data>
         </div>
         <h2>Transactions</h2>
-        <div v-for="(tx,key,index) in transactions">
-          <trx :tx="tx"></trx>
+        <div v-if="exists.transactions">
+          <div v-for="(tx,key,index) in transactions">
+            <trx :tx="tx"></trx>
+          </div>
         </div>
+        <div v-else>
+          <div class="loader"></div>
+        </div>        
         <div class="center">
           <div v-for="(p,key,index) in pages" class="page"
             ><span v-if="p.link"
@@ -42,6 +63,9 @@
           ></div>
         </div>
       </div>  
+    </div>
+    <div v-else>
+      <div class="loader"></div>
     </div>
   </div>
 </template>
@@ -57,7 +81,13 @@ export default {
     return {
       account: {
       },
+      witness: {
+      },
       accountGenerals: {      
+      },
+      accountGenerals2: {      
+      },
+      witnessGenerals: {
       },
       authorities:{
       },
@@ -67,9 +97,11 @@ export default {
       pages: [],
       exists: {
         account: false,
+        witness: false,
         json_metadata: false,
         witness_votes: false,
         voting_manabar: false,
+        transactions: false,
       },      
     }
   },
@@ -84,7 +116,7 @@ export default {
   },
 
   watch: {
-    '$route': 'fetchData'
+    '$route': 'fetchData'    
   },
 
   methods: {
@@ -93,6 +125,9 @@ export default {
       var name = this.$route.params.account;
             
       console.log('Fetching data for '+name);
+      this.exists.account = false;
+      this.exists.transactions = false;
+      this.exists.witness = false;
       var self = this;
       steem.api.getAccounts([name], function (err, result) {      
         if (err || !result || result.length == 0) {
@@ -114,13 +149,15 @@ export default {
         
         result[0].rep_log = Utils.getReputation(result[0].reputation);
         result[0].profile_image = Utils.extractUrlProfileImage(result[0].json_metadata);
+        result[0].cover_image = Utils.extractUrlCoverImage(result[0].json_metadata);
         for(var i=0;i<result[0].witness_votes.length;i++){
           result[0].witness_votes[i] = {link:'#/@'+result[0].witness_votes[i] , text:result[0].witness_votes[i]};
         }
         
         self.account = result[0];
         
-        var no_keys = ['owner','active','posting','memo_key','json_metadata','voting_manabar','proxied_vsf_votes','transfer_history','market_history','post_history','vote_history','other_history','witness_votes','tags_usage','guest_bloggers','rep_log','profile_image'];
+        var no_keys = ['owner','active','posting','memo_key','json_metadata','voting_manabar','proxied_vsf_votes','transfer_history','market_history','post_history','vote_history','other_history','witness_votes','tags_usage','guest_bloggers','rep_log','profile_image','cover_image',
+        'balance','sbd_balance','savings_balance'];
         
         var acc = {};
         for(var key in self.account){
@@ -128,11 +165,20 @@ export default {
           acc[key] = self.account[key];
         }
         
-        self.accountGenerals = acc;
+        self.accountGenerals2 = acc;
         self.authorities.owner   = self.arrayAuthorities(self.account.owner);
         self.authorities.active  = self.arrayAuthorities(self.account.active);
         self.authorities.posting = self.arrayAuthorities(self.account.posting);
-        self.authorities.memo    = [self.account.memo_key];                
+        self.authorities.memo    = [self.account.memo_key];
+        
+        var delegated = parseFloat(self.account.received_vesting_shares) - parseFloat(self.account.delegated_vesting_shares);
+        self.accountGenerals = {
+          voting_power: Utils.getVotingPower(self.account)/100 + '%',
+          balance: self.account.balance,
+          sbd_balance: self.account.sbd_balance,
+          savings_balance: self.account.savings_balance,
+          steem_power: self.vests2sp(self.account.vesting_shares) + ' (' + (delegated>0?'+':'') + self.vests2sp(delegated) + ')',
+        }
       });
       
       steem.api.getAccountHistory(name,-1,0, function(err, result) {
@@ -193,7 +239,28 @@ export default {
             return;
           }        
           self.transactions = result.reverse();
+          self.exists.transactions = true;
         });
+      });
+      
+      steem.api.getWitnessByAccount(name, function(err, result){
+        if (err || !result) {
+          //not a witness
+          return;
+        }
+        self.witness = result;
+        
+        var no_keys = ['signing_key','props','sbd_exchange_rate'];
+        
+        var wit = {};
+        for(var key in self.witness){
+          if(no_keys.indexOf(key) >= 0) continue;
+          wit[key] = self.witness[key];
+        }
+        
+        self.witnessGenerals = wit;
+        self.authorities.signing  = [self.witness.signing_key];
+        self.exists.witness = true;
       });
     },
     
@@ -212,18 +279,17 @@ export default {
 .profile{  
   text-align: center;
   display: block;
-  height: 10rem;
-  background-color: black;
-}
+  height: 8rem;  
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
 
-.info1{
-  display: block;
-  margin: 15px 50px;
-}
-
-.info2{
-  display: block;
-  margin: 15px 50px;
+  color: white;
+  text-shadow: 2px 2px 5px #000000;  
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .image{
@@ -240,12 +306,8 @@ export default {
 }
 
 .name{
-  display: inline-block;  
-}
-
-.reputation{
-  font-size: 1.5rem;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .page{
@@ -253,19 +315,4 @@ export default {
   margin: 10px 4px;
 }
 
-@media only screen and (min-width: 768px) {
-  .info1{
-    display: inline-block;
-    width: 18rem;
-    vertical-align: top;
-    margin: 15px 10px 15px 50px;    
-  }
-
-  .info2{
-    display: inline-block;
-    width: calc(100% - 18rem - 120px);
-    vertical-align: top;
-    margin: 15px 50px 15px 10px;
-  }
-}
 </style>

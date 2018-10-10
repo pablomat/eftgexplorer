@@ -1,3 +1,5 @@
+import Config from '@/config.js'
+    
 export default{
   getReputation: function (reputation){
     var rep = parseInt(reputation);
@@ -40,6 +42,34 @@ export default{
   extractUrlProfileImage: function(metadata){
     if(typeof metadata.profile !== 'undefined' && typeof metadata.profile.profile_image !== 'undefined' ){
       var url = metadata.profile.profile_image;
+      if(url.substring(0,8) == "![image]"){
+        return url.substring(9, url.length - 1);
+      }
+      return url;
+    }
+    return '';
+  },
+  
+  getVotingPower: function(account){
+    var voting_power = account.voting_power;
+    var last_vote_time = new Date((account.last_vote_time) + 'Z');
+    var elapsed_seconds = (new Date() - last_vote_time) / 1000;
+    var regenerated_power = Math.round((10000 * elapsed_seconds) / (5*24*60*60));
+    var current_power = Math.min(voting_power + regenerated_power, 10000);
+    return current_power;
+  },
+  
+  getInflationRate: function(block_num){
+    var start_inflation_rate = Config.STEEM_INFLATION_RATE_START_PERCENT;
+    var inflation_rate_adjustment = block_num / Config.STEEM_INFLATION_NARROWING_PERIOD;
+    var inflation_rate_floor = Config.STEEM_INFLATION_RATE_STOP_PERCENT;
+    var current_inflation_rate = Math.max( start_inflation_rate - inflation_rate_adjustment, inflation_rate_floor );
+    return parseInt(current_inflation_rate);
+  },
+ 
+  extractUrlCoverImage: function(metadata){
+    if(typeof metadata.profile !== 'undefined' && typeof metadata.profile.cover_image !== 'undefined' ){
+      var url = metadata.profile.cover_image;
       if(url.substring(0,8) == "![image]"){
         return url.substring(9, url.length - 1);
       }
