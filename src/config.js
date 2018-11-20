@@ -18,7 +18,7 @@ const STEEM_ADDRESS_PREFIX = 'EUR'
 
 //witnesses map
 const MAP = {
-  TOP_WITNESSES: 20,
+  TOP_WITNESSES: 30,
   INI_POS : [47, 15], //latitude, longitude
   INI_ZOOM : 4 ,
 }

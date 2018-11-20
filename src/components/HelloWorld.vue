@@ -9,7 +9,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to SteemExplorer'
+      msg: 'Welcome to the EFTG Explorer'
     }
   }
 }
