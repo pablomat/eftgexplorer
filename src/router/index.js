@@ -38,7 +38,7 @@ export default new Router({
       path: '/map',
       name: 'Map',
       component: Map
-    }, 
+    },    
   ],
   //mode: 'history',
 })

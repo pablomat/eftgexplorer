@@ -78,14 +78,6 @@
               </div>
             </div>
           </transition-group>
-        </div
-        ><div class="schedule">
-          <h2>Schedule</h2>
-          <transition-group name="list-schedule" tag="div">
-            <div v-for="(wit,key,index) in schedule" :key="wit" class="list-schedule-item">
-              {{wit}}
-            </div>
-          </transition-group>
         </div>
       </div>
       <div v-else>
