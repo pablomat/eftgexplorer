@@ -162,14 +162,24 @@ export default {
 		//add new data to witnesses
         result.forEach(function(wit){
 		  names.push(wit.owner);
+		  
+		  var status = 'online';
+		  if(wit.signing_key == Config.STEEM_ADDRESS_PREFIX + '1111111111111111111111111111111114T1Anm'){
+		    status = 'offline';
+			console.log('@'+wit.owner+' is offline');
+		  }else{
+		    console.log('@'+wit.owner+' is online');
+		  }
+		  
 		  var id = self.witnesses.findIndex(function(w){ return w.owner == wit.owner; });
 		  if(id >= 0){
 		    self.witnesses[id].id = wit.id; //TODO: no reactive. Consider using self.$set(self.witnesses, id, new_val)
 			self.witnesses[id].location = '';
-		  }else{
+			self.witnesses[id].status = status;
+		  }else{		    
 		    self.witnesses.push({
 			  owner: wit.owner,
-			  status: 'offline',
+			  status: status,
 			  latlong: [null, null],
 			  location: '',
 			});
@@ -220,8 +230,11 @@ export default {
                     wit.latlong = [parseFloat(point.lat)+Math.random()*0.05-0.025, parseFloat(point.lon)+Math.random()*0.05-0.025]
 				
          			var LeafIcon = L.Icon.extend({ options: {iconSize: [12, 12],} });
-                    var redIcon = new LeafIcon({iconUrl: redIconUrl})
-                    wit.marker = L.marker(wit.latlong, {icon: redIcon}).bindPopup(wit.owner).addTo(self.map);
+					var icon;
+					if(wit.status == 'online') icon = new LeafIcon({iconUrl: blueIconUrl})
+					else icon = new LeafIcon({iconUrl: redIconUrl})
+					
+                    wit.marker = L.marker(wit.latlong, {icon: icon}).bindPopup(wit.owner).addTo(self.map);
                   }else if(wit.marker && wit.marker!= null){
 				    console.log('The site "'+wit.location+'" is not a valid location. (@'+wit.owner+'). Point taken from seednodes');
 		          }else{
@@ -339,10 +352,10 @@ export default {
                   }catch(e){
                     metadata = null;
                   }
-                  	
-                  self.witnesses.push({
+				  
+				  self.witnesses.push({
 			        owner: account.name,
-			        status: 'offline',
+			        status: 'online', //if it is producing blocks there is no need to check the signing key, he is online
 			        latlong: [null, null],
 			        location: location,
 			      });
