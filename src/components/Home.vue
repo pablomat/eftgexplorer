@@ -201,7 +201,7 @@ export default {
         
         
         // SCHEDULE
-        if(self.schedule.length == 0){
+        /*if(self.schedule.length == 0){
           self.schedule = result.witness_schedule.current_shuffled_witnesses;
           return;
         }
@@ -216,7 +216,7 @@ export default {
         for(var i=0;i<id;i++){
           self.$set(self.schedule, round.length-id-1+i, round[i]);
         }
-        self.$set(self.schedule, round.length-1, round[id]);
+        self.$set(self.schedule, round.length-1, round[id]);*/
       });
     },
   
