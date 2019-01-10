@@ -143,7 +143,7 @@ export default {
   
   computed: {
     sbd_percent: function(){
-      return parseFloat(this.chainprops.current_sbd_supply) * this.chainprops.feed_price * 100 / parseFloat(this.chainprops.virtual_supply);      
+      return parseFloat(this.chainprops.current_sbd_supply) / this.chainprops.feed_price * 100 / parseFloat(this.chainprops.virtual_supply);      
     },    
     sbd_per_rshare: function(){
       return this.chainprops.steem_per_rshare * this.chainprops.feed_price;
