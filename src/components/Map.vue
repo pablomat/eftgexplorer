@@ -1,7 +1,8 @@
 <template>
   <div>
+    <HeaderEFTG ref="headerEFTG"></HeaderEFTG>
     <div class="info0">
-      <h1>Witnesses Monitor Map</h1>
+      <h2>Witnesses Monitor Map</h2>
     </div>
 	<div class="map">
       <div id="map"></div>
@@ -52,6 +53,7 @@ import 'leaflet/dist/leaflet.css';
 import greenIconUrl from '@/assets/green-circle.png'
 import redIconUrl from '@/assets/red-circle.png'
 import blueIconUrl from '@/assets/blue-circle.png'
+import HeaderEFTG from "@/components/HeaderEFTG";
 
 // Axios import for HTTP requests
 import axios from 'axios';
@@ -78,6 +80,10 @@ export default {
       current_witness: '',	  
 	  first_time: true,
     }
+  },
+  
+  components: {
+    HeaderEFTG
   },
   
   mounted() {
@@ -238,7 +244,7 @@ export default {
                   
                   // changing name "wit23" etc ... to "oam-city" based on location
                   wit.visible_name = wit.owner
-                  if (wit.owner.substring(0,3) !== 'oam'){
+                  if (wit.owner.substring(0,3) === 'wit'){
                     wit.visible_name = 'oam-' + wit.location.toLowerCase()
                     console.log('changing name of ' + wit.owner + ' to ' + wit.visible_name)
                   }
@@ -404,7 +410,7 @@ export default {
                         
                         // changing name "wit23" etc ... to "oam-city" based on location
                         self.witnesses[id].visible_name = account.name
-                        if (account.name.substring(0,3) !== 'oam'){
+                        if (account.name.substring(0,3) === 'wit'){
                           self.witnesses[id].visible_name = 'oam-' + self.witnesses[id].location.toLowerCase()
                           b.witness_visible_name = self.witnesses[id].visible_name
                           console.log('changing name of ' + account.name + ' to ' + self.witnesses[id].visible_name)

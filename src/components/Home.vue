@@ -1,5 +1,6 @@
 <template>
-  <div class="home">      
+  <div class="home">
+    <HeaderEFTG ref="headerEFTG"></HeaderEFTG>     
     <div class="info0">
       <h1>EFTG Explorer</h1>
     </div>
@@ -92,6 +93,7 @@ import Config from '@/config.js'
 import Utils from '@/js/utils.js'
 import CardData from '@/components/CardData'
 import Trx from '@/components/Trx'
+import HeaderEFTG from "@/components/HeaderEFTG";
 
 export default {
   name: 'Home',
@@ -127,7 +129,8 @@ export default {
   
   components: {
     CardData,
-    Trx
+    Trx,
+    HeaderEFTG
   },
   
   created() {
