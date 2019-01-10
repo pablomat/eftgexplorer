@@ -346,7 +346,7 @@ export default {
               self.last_witness = b.witness;				
             }else{
               console.log('Witness @'+b.witness+' is not in the list. Adding him to the map');
-              self.current_location = '(Unknown location)';
+              // self.current_location = '(Unknown location)';
 				
               // Get the account information where metadata is stored
               steem.api.getAccounts([b.witness], function(err, result){
@@ -406,7 +406,14 @@ export default {
                         self.witnesses[id].visible_name = account.name
                         if (account.name.substring(0,3) !== 'oam'){
                           self.witnesses[id].visible_name = 'oam-' + self.witnesses[id].location.toLowerCase()
+                          b.witness_visible_name = self.witnesses[id].visible_name
                           console.log('changing name of ' + account.name + ' to ' + self.witnesses[id].visible_name)
+                          
+                          /* todo: display this line only if the axios request 
+                           * to get the location doesn't take a lot of time 
+                           * (no more than 3 sec)
+                           */
+                          self.current_witness = self.witnesses[id].visible_name 
                         }
                         
                         self.witnesses[id].marker = L.marker(latlong, {icon: greenIcon}).bindPopup(self.witnesses[id].visible_name).addTo(self.map);
