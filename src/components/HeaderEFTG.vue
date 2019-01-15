@@ -36,10 +36,10 @@
         <div class="collapse navbar-collapse">
         <lu class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-item nav-link" href="http://pulsar.dev.blkcc.xyz:8081/#/">OAM Portal</a>
+            <a class="nav-item nav-link" :href="URL_PULSAR + '/oam-portal'">OAM Portal</a>
           </li>
           <li class="nav-item">
-            <a class="nav-item nav-link" href="http://pulsar.dev.blkcc.xyz:8081/#/search.html">Investor Portal</a>
+            <a class="nav-item nav-link" :href="URL_PULSAR + '/search.html'">Investor Portal</a>
           </li>
           <li class="nav-item">
             <router-link to="/map" class="nav-item nav-link">Map</router-link>
@@ -53,6 +53,7 @@
 
 <script>
 import Auth from "@/components/Auth";
+import Config from "@/config.js";
 
 export default {
   name: "HeaderEFTG",
@@ -73,7 +74,8 @@ export default {
           memo: null
         }
       },
-      showModal: false
+      showModal: false,
+      URL_PULSAR: Config.PULSAR.url,
     };
   },
   mounted() {

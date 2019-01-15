@@ -2,7 +2,8 @@
   <div>
     <HeaderEFTG ref="headerEFTG"></HeaderEFTG>
     <div class="info0">
-      <h2>Witnesses Monitor Map</h2>
+      <h2 style="display: inline-block;">Witnesses Monitor Map</h2>
+      <div style="display: inline-block; float: right; padding-top: 4px;"><h3>Last validated blocks</h3></div>      
     </div>
 	<div class="map">
       <div id="map"></div>
@@ -244,7 +245,7 @@ export default {
                   
                   // changing name "wit23" etc ... to "oam-city" based on location
                   wit.visible_name = wit.owner
-                  if (wit.owner.substring(0,3) === 'wit'){
+                  if (wit.owner.substring(0,3) === 'wit' || wit.owner.substring(0,3) === 'tst'){
                     wit.visible_name = 'oam-' + wit.location.toLowerCase()
                     console.log('changing name of ' + wit.owner + ' to ' + wit.visible_name)
                   }
@@ -410,7 +411,7 @@ export default {
                         
                         // changing name "wit23" etc ... to "oam-city" based on location
                         self.witnesses[id].visible_name = account.name
-                        if (account.name.substring(0,3) === 'wit'){
+                        if (account.name.substring(0,3) === 'wit' || wit.owner.substring(0,3) === 'tst'){
                           self.witnesses[id].visible_name = 'oam-' + self.witnesses[id].location.toLowerCase()
                           b.witness_visible_name = self.witnesses[id].visible_name
                           console.log('changing name of ' + account.name + ' to ' + self.witnesses[id].visible_name)
