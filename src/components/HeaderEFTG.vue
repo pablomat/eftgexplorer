@@ -36,14 +36,14 @@
         <div class="collapse navbar-collapse">
         <lu class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-item nav-link" :href="URL_PULSAR + '/oam-portal'">OAM Portal</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-item nav-link" :href="URL_PULSAR + '/search.html'">Investor Portal</a>
+            <router-link to="/" class="nav-item nav-link">Explorer</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/map" class="nav-item nav-link">Map</router-link>
-          </li>          
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" :href="URL_PULSAR + '/'" target="_blank">Pulsar</a>
+          </li>                    
         </lu>
       </div>
       </nav>
